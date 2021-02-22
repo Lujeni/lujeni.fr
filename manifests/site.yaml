@@ -1,0 +1,148 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: frontend-site-production
+  namespace: default
+  labels:
+    component: frontend
+    environment: production
+    name: site
+    release: "0.1-production"
+    who: lujeni
+data:
+    {}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-site-production
+  namespace: default
+  labels:
+    component: frontend
+    environment: production
+    name: site
+    release: "0.1-production"
+    who: lujeni
+data:
+    {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-site-production
+  namespace: default
+  labels:
+    component: frontend
+    environment: production
+    name: site
+    release: "0.1-production"
+    who: lujeni
+spec:
+  type: ClusterIP
+  selector:
+    component: frontend
+    environment: production
+    name: site
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-site-production
+  namespace: default
+  labels:
+    component: frontend
+    environment: production
+    name: site
+    release: "0.1-production"
+    checksum/config: d19bf0b6c2abe0ab8ec110270ad483b68a7bc8a4ae2a716b85
+    checksum/secret: 7cae34bcc19a92a3b6cb8861149f1dcd7afcb65c21f5565861
+    who: lujeni
+spec:
+  selector:
+    matchLabels:
+      component: frontend
+      environment: production
+      name: site
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      name: frontend-site
+      annotations:
+        logging.active: "true"
+      labels:
+        component: frontend
+        environment: production
+        name: site
+        release: "0.1-production"
+        checksum/config: d19bf0b6c2abe0ab8ec110270ad483b68a7bc8a4ae2a716b85
+        checksum/secret: 7cae34bcc19a92a3b6cb8861149f1dcd7afcb65c21f5565861
+        who: lujeni
+    spec:
+      imagePullSecrets:
+        - name: registry-secret
+      containers:
+      - name: frontend-site-production
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          runAsUser: 1001
+        image: "rg.fr-par.scw.cloud/lujeni/site:0.1-production"
+        imagePullPolicy: Always
+        ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+        resources:
+          limits:
+            memory: 64Mi
+          requests:
+            memory: 64Mi
+        envFrom:
+        - configMapRef:
+            name: frontend-site-production
+        - secretRef:
+            name: frontend-site-production
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: frontend-site-production
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/issuer: "letsencrypt-prod"
+  labels:
+    component: frontend
+    environment: production
+    name: site
+    release: "0.1-production"
+    who: lujeni
+spec:
+  rules:
+  - host: lujeni.fr
+    http:
+      paths:
+      - backend:
+          serviceName: frontend-site-production
+          servicePort: 80
+  tls:
+  - hosts:
+    - lujeni.fr
+    secretName: tls-frontend-site-production

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Japonais</title>
+    <link>https://japonais.lujeni.fr/tags/</link>
+    <description>Recent content in Tags on Japonais</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>jp-JP</language>
+    <lastBuildDate>Fri, 19 Feb 2021 22:33:55 +0000</lastBuildDate>
+    
+	<atom:link href="https://japonais.lujeni.fr/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>卑語</title>
+      <link>https://japonais.lujeni.fr/tags/%E5%8D%91%E8%AA%9E/</link>
+      <pubDate>Fri, 19 Feb 2021 22:33:55 +0000</pubDate>
+      
+      <guid>https://japonais.lujeni.fr/tags/%E5%8D%91%E8%AA%9E/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,26 @@
+baseURL = "https://japonais.lujeni.fr/"
+languageCode = "jp-JP"
+title = "Japonais"
+theme = "yinyang"
+DefaultContentLanguage = "jp"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    guessSyntax = true
+    noClasses = true
+    style = "bw"
+    tabWidth = 2
+
+[author]
+  name = "Lujeni"
+  homepage = "https://japonais.lujeni.fr"
+
+
+[params]
+mainSections = ["posts"]
+headTitle = "書くことで学ぶ"
+postHeaderContent = ""
+extraCSSFiles = []
